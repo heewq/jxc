@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.jxc.dao.GoodsDao">
+    <insert id="insert">
+        insert into t_goods (goods_code, goods_name, inventory_quantity, min_num, goods_model, goods_producer,
+                             purchasing_price, last_purchasing_price, remarks, selling_price, state, goods_unit,
+                             goods_type_id)
+        values (#{goods.goodsCode}, #{goods.goodsName}, #{goods.inventoryQuantity}, #{goods.minNum},
+                #{goods.goodsModel},
+                #{goods.goodsProducer}, #{goods.purchasingPrice}, #{goods.lastPurchasingPrice}, #{goods.remarks},
+                #{goods.sellingPrice}, #{goods.state}, #{goods.goodsUnit}, #{goods.goodsTypeId});
+
+    </insert>
+    <update id="update">
+        update t_goods
+        <set>
+            <if test="goods.goodsCode != null and goods.goodsCode != ''">
+                goods_code = #{goods.goodsCode},
+            </if>
+            <if test="goods.goodsName != null and goods.goodsName != ''">
+                goods_name = #{goods.goodsName},
+            </if>
+            <if test="goods.inventoryQuantity != null and goods.inventoryQuantity != ''">
+                inventory_quantity = #{goods.inventoryQuantity},
+            </if>
+            <if test="goods.minNum != null and goods.minNum != ''">
+                min_num = #{goods.minNum},
+            </if>
+            <if test="goods.goodsModel != null and goods.goodsModel != ''">
+                goods_model = #{goods.goodsModel},
+            </if>
+            <if test="goods.goodsProducer != null and goods.goodsProducer != ''">
+                goods_producer = #{goods.goodsProducer},
+            </if>
+            <if test="goods.purchasingPrice != null and goods.purchasingPrice != ''">
+                purchasing_price = #{goods.purchasingPrice},
+            </if>
+            <if test="goods.lastPurchasingPrice != null and goods.lastPurchasingPrice != ''">
+                last_purchasing_price = #{goods.lastPurchasingPrice},
+            </if>
+            <if test="goods.remarks != null and goods.remarks != ''">
+                remarks = #{goods.remarks},
+            </if>
+            <if test="goods.sellingPrice != null and goods.sellingPrice != ''">
+                selling_price = #{goods.sellingPrice},
+            </if>
+            <if test="goods.state != null and goods.state != ''">
+                state = #{goods.state},
+            </if>
+            <if test="goods.goodsUnit != null and goods.goodsUnit != ''">
+                goods_unit = #{goods.goodsUnit},
+            </if>
+            <if test="goods.goodsTypeId != null and goods.goodsTypeId != ''">
+                goods_unit = #{goods.goodsTypeId}
+            </if>
+            where goods_id = #{goods.goodsId}
+        </set>
+    </update>
+    <update id="updateById">
+        UPDATE t_goods
+        <set>
+            <if test="inventoryQuantity != null">
+                inventory_quantity = #{inventoryQuantity},
+            </if>
+            <if test="purchasingPrice != null">
+                purchasing_price = #{purchasingPrice}
+            </if>
+        </set>
+        WHERE goods_id = #{goodsId}
+    </update>
+    <delete id="deleteById">
+        DELETE
+        FROM t_goods
+        WHERE goods_id = #{goodsId}
+          AND state = 0
+          AND goods_id NOT IN (SELECT DISTINCT(t.goods_id)
+                               FROM (SELECT goods_id
+                                     FROM `t_sale_list_goods`
+                                     UNION
+                                     SELECT goods_id
+                                     FROM `t_purchase_list_goods`) t)
+
+    </delete>
+    <!--    <resultMap id="BaseResultMap" type="com.atguigu.jxc.entity.Goods">-->
+    <!--        <result column="goods_id" property="goodsId" jdbcType="INTEGER"/>-->
+    <!--        <result column="goods_code" property="goodsCode" jdbcType="VARCHAR"/>-->
+    <!--        <result column="goods_name" property="goodsName" jdbcType="VARCHAR"/>-->
+    <!--        <result column="inventory_quantity" property="inventoryQuantity" jdbcType="INTEGER"/>-->
+    <!--        <result column="last_purchasing_price" property="lastPurchasingPrice" jdbcType="DECIMAL"/>-->
+    <!--        <result column="min_num" property="minNum" jdbcType="INTEGER"/>-->
+    <!--        <result column="goods_model" property="goodsModel" jdbcType="VARCHAR"/>-->
+    <!--        <result column="goods_producer" property="goodsProducer" jdbcType="VARCHAR"/>-->
+    <!--        <result column="purchasing_price" property="purchasingPrice" jdbcType="DECIMAL"/>-->
+    <!--        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>-->
+    <!--        <result column="selling_price" property="sellingPrice" jdbcType="DECIMAL"/>-->
+    <!--        <result column="state" property="state" jdbcType="INTEGER"/>-->
+    <!--        <result column="goods_unit" property="goodsUnit" jdbcType="VARCHAR"/>-->
+    <!--        <result column="goods_type_id" property="goodsTypeId" jdbcType="INTEGER"/>-->
+    <!--        <result column="goods_type_name" property="goodsTypeName" jdbcType="VARCHAR"/>-->
+    <!--    </resultMap>-->
+
+    <select id="listInventory" resultType="com.atguigu.jxc.entity.Goods">
+        SELECT g.*, gt.goods_type_name
+        FROM `t_goods` g
+        JOIN `t_goods_type` gt
+        USING(goods_type_id)
+        <where>
+            <if test="codeOrName != null and codeOrName != ''">
+                AND
+                (
+                g.goods_name LIKE CONCAT('%', #{codeOrName} ,'%') OR
+                g.goods_code LIKE CONCAT('%', #{codeOrName} ,'%')
+                )
+            </if>
+            <if test="goodsTypeId != null and goodsTypeId != 1">
+                AND
+                (
+                g.goods_type_id = #{goodsTypeId} OR
+                gt.p_id = #{goodsTypeId}
+                )
+            </if>
+        </where>
+        LIMIT #{offset}, #{rows}
+    </select>
+    <select id="getGoodsInventoryCount" resultType="java.lang.Integer">
+
+        SELECT COUNT(*)
+        FROM `t_goods` g
+        JOIN `t_goods_type` gt
+        USING(goods_type_id)
+        <where>
+            <if test="codeOrName != null and codeOrName != ''">
+                AND
+                (
+                g.goods_name LIKE CONCAT('%', #{codeOrName} ,'%') OR
+                g.goods_code LIKE CONCAT('%', #{codeOrName} ,'%')
+                )
+            </if>
+            <if test="goodsTypeId != null and goodsTypeId != 1">
+                AND
+                (
+                g.goods_type_id = #{goodsTypeId} OR
+                gt.p_id = #{goodsTypeId}
+                )
+            </if>
+        </where>
+    </select>
+    <select id="getMaxCode" resultType="java.lang.String">
+        SELECT MAX(t_goods.goods_code)
+        FROM t_goods
+    </select>
+    <select id="listNoInventoryQuantity" resultType="com.atguigu.jxc.entity.Goods">
+        SELECT *
+        FROM `t_goods` g
+        <where>
+            <if test="nameOrCode != null and nameOrCode != ''">
+                (
+                g.goods_name LIKE CONCAT('%', #{nameOrCode} ,'%') OR
+                g.goods_code LIKE CONCAT('%', #{nameOrCode} ,'%')
+                ) AND
+            </if>
+            inventory_quantity &lt;= 0
+        </where>
+        LIMIT #{offset}, #{rows}
+    </select>
+
+    <select id="totalNoInventoryQuantity" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM `t_goods` g
+        <where>
+            <if test="nameOrCode != null and nameOrCode != ''">
+                (
+                g.goods_name LIKE CONCAT('%', #{nameOrCode} ,'%') OR
+                g.goods_code LIKE CONCAT('%', #{nameOrCode} ,'%')
+                ) AND
+            </if>
+            inventory_quantity &lt;= 0
+        </where>
+    </select>
+    <select id="listHasInventoryQuantity" resultType="com.atguigu.jxc.entity.Goods">
+        SELECT *
+        FROM `t_goods` g
+        <where>
+            <if test="nameOrCode != null and nameOrCode != ''">
+                (
+                g.goods_name LIKE CONCAT('%', #{nameOrCode} ,'%') OR
+                g.goods_code LIKE CONCAT('%', #{nameOrCode} ,'%')
+                ) AND
+            </if>
+            inventory_quantity &gt; 0
+        </where>
+        LIMIT #{offset}, #{rows}
+    </select>
+    <select id="totalHasInventoryQuantity" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM `t_goods` g
+        <where>
+            <if test="nameOrCode != null and nameOrCode != ''">
+                (
+                g.goods_name LIKE CONCAT('%', #{nameOrCode} ,'%') OR
+                g.goods_code LIKE CONCAT('%', #{nameOrCode} ,'%')
+                ) AND
+            </if>
+            inventory_quantity &gt; 0
+        </where>
+
+    </select>
+    <select id="listAlarm" resultType="com.atguigu.jxc.entity.Goods">
+        SELECT *
+        FROM `t_goods`
+        WHERE inventory_quantity &lt; min_num
+    </select>
+</mapper>

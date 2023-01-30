@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.jxc.dao.OverflowListDao">
+    <insert id="save" useGeneratedKeys="true" keyProperty="overflowListId" keyColumn="overflow_list_id">
+        insert into t_overflow_list (overflow_number, overflow_date, remarks, user_id)
+        values (#{overflowNumber}, #{overflowDate}, #{remarks}, #{userId})
+    </insert>
+    <select id="list" resultType="com.atguigu.jxc.entity.OverflowList">
+        SELECT ol.*, u.true_name
+        FROM `t_overflow_list` ol
+                 JOIN `t_user` u
+                      ON u.user_id = ol.user_id
+        WHERE DATE_FORMAT(ol.overflow_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{sTime}, '%Y-%m-%d')
+          AND DATE_FORMAT(ol.overflow_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{eTime}, '%Y-%m-%d')
+    </select>
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.jxc.dao.CustomerDao">
+    <insert id="insert">
+        insert into t_customer (customer_name, contacts, phone_number, address, remarks)
+        values (#{customer.customerName}, #{customer.contacts}, #{customer.phoneNumber}, #{customer.address},
+                #{customer.remarks});
+    </insert>
+
+    <update id="updateById">
+        update t_customer
+        <set>
+            <if test="customer.customerName and customer.customerName != ''">
+                customer_name = #{customer.customerName},
+            </if>
+            <if test="customer.contacts and customer.contacts != ''">
+                contacts = #{customer.contacts},
+            </if>
+            <if test="customer.phoneNumber and customer.phoneNumber != ''">
+                phone_number = #{customer.phoneNumber},
+            </if>
+            <if test="customer.address and customer.address != ''">
+                address = #{customer.address},
+            </if>
+            <if test="customer.remarks and customer.remarks != ''">
+                remarks = #{customer.remarks}
+            </if>
+            WHERE customer_id = #{customer.customerId}
+        </set>
+    </update>
+    <delete id="deleteById">
+        DELETE FROM t_customer
+        <where>
+            <foreach collection="idList" item="id" close=")" open="customer_id IN (" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+
+    <select id="listCustomer" resultType="com.atguigu.jxc.entity.Customer">
+        SELECT *
+        FROM t_customer
+        <where>
+            <if test="customerName != null and customerName != ''">
+                customer_name LIKE CONCAT('%', #{customerName}, '%')
+            </if>
+        </where>
+        LIMIT #{offset}, #{rows}
+    </select>
+    <select id="getTotalCustomer" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM t_customer
+        <where>
+            <if test="customerName != null and customerName != ''">
+                customer_name LIKE CONCAT('%', #{customerName}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>
