@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface SupplierDao {
     List<Supplier> searchSupplier(@Param("offset") Integer offset, @Param("rows") Integer rows, @Param("supplierName") String supplierName);
-
     Integer getTotalSuppliers(@Param("supplierName") String supplierName);
 
     void save(@Param("supplier") Supplier supplier);

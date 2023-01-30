@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -39,5 +40,10 @@ public class CustomerController {
     public ServiceVO delete(@RequestParam String ids) {
         customerService.deleteById(ids);
         return new ServiceVO(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
+    }
+
+    @PostMapping("/getComboboxList")
+    public List<Customer> comboboxListCustomer(@RequestParam(value = "q", required = false) String customerName) {
+        return customerService.comboboxListCustomer(customerName);
     }
 }

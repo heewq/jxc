@@ -28,4 +28,6 @@ public interface GoodsService {
     void updateById(Integer goodsId, Integer inventoryQuantity, double purchasingPrice);
 
     Map<String, Object> listAlarm();
+
+    void updateInventoryQuantityById(Integer goodsId, Integer quantity);
 }

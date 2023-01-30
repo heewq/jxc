@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.jxc.dao.CustomerReturnListDao">
+    <insert id="save" useGeneratedKeys="true" keyProperty="customerReturnListId" keyColumn="customer_return_list_id">
+        INSERT INTO t_customer_return_list (return_number, return_date, amount_paid,
+                                            amount_payable, state, customer_id, user_id, remarks)
+        VALUES (#{returnNumber}, #{returnDate}, #{amountPaid}, #{amountPayable}, #{state}, #{customerId}, #{userId},
+                #{remarks})
+    </insert>
+    <delete id="deleteById">
+        DELETE
+        FROM t_customer_return_list
+        WHERE customer_return_list_id = #{customerReturnListId}
+    </delete>
+    <select id="list" resultType="com.atguigu.jxc.entity.CustomerReturnList">
+        SELECT crl.*, u.true_name, c.customer_name
+        FROM `t_customer_return_list` crl
+        JOIN t_user u
+        USING (user_id)
+        JOIN t_customer c
+        USING (customer_id)
+        <where>
+            DATE_FORMAT(crl.return_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{sTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(crl.return_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{eTime}, '%Y-%m-%d')
+            <if test="returnNumber != null and returnNumber != ''">
+                AND crl.return_number LIKE CONCAT('%', #{returnNumber}, '%')
+            </if>
+            <if test="customerId != null and customerId != ''">
+                AND sl.customer_id = #{customerId}
+            </if>
+            <if test="state != null and state != ''">
+                AND pl.state = #{state}
+            </if>
+        </where>
+    </select>
+</mapper>

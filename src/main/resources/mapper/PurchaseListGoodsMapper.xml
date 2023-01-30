@@ -9,4 +9,14 @@
         VALUES (#{goodsId}, #{goodsCode}, #{goodsName}, #{goodsModel}, #{goodsUnit}, #{goodsNum}, #{price}, #{total},
                 #{purchaseListId}, #{goodsTypeId})
     </insert>
+    <delete id="deleteByPurchaseListId">
+        DELETE
+        FROM t_purchase_list_goods
+        WHERE purchase_list_id = #{purchaseListId}
+    </delete>
+    <select id="listPurchaseGoodsById" resultType="com.atguigu.jxc.entity.PurchaseListGoods">
+        SELECT *
+        FROM t_purchase_list_goods
+        WHERE purchase_list_id = #{purchaseListId}
+    </select>
 </mapper>

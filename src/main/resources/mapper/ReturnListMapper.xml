@@ -9,4 +9,30 @@
         VALUES (#{returnNumber}, #{returnDate}, #{amountPaid}, #{amountPayable}, #{remarks}, #{state}, #{supplierId},
                 #{userId})
     </insert>
+    <delete id="deleteById">
+        DELETE
+        FROM t_return_list
+        WHERE return_list_id = #{returnListId}
+    </delete>
+    <select id="list" resultType="com.atguigu.jxc.entity.ReturnList">
+        SELECT rl.*, u.true_name, s.supplier_name
+        FROM `t_return_list` rl
+        JOIN t_user u
+        USING (user_id)
+        JOIN t_supplier s
+        USING (supplier_id)
+        <where>
+            DATE_FORMAT(rl.return_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{sTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(rl.return_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{eTime}, '%Y-%m-%d')
+            <if test="returnNumber != null and returnNumber != ''">
+                AND rl.return_number LIKE CONCAT('%', #{returnNumber}, '%')
+            </if>
+            <if test="supplierId != null and supplierId != ''">
+                AND rl.supplier_id = #{supplierId}
+            </if>
+            <if test="state != null and state != ''">
+                AND rl.state = #{state}
+            </if>
+        </where>
+    </select>
 </mapper>

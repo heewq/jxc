@@ -9,4 +9,14 @@
         VALUES (#{goodsId}, #{goodsCode}, #{goodsName}, #{goodsModel}, #{goodsUnit}, #{goodsNum}, #{price}, #{total},
                 #{returnListId}, #{goodsTypeId})
     </insert>
+    <delete id="deleteByReturnListId">
+        DELETE
+        FROM t_return_list_goods
+        WHERE return_list_id = #{returnListId}
+    </delete>
+    <select id="listReturnGoodsById" resultType="com.atguigu.jxc.entity.ReturnListGoods">
+        SELECT *
+        FROM t_return_list_goods
+        WHERE return_list_id = #{returnListId}
+    </select>
 </mapper>

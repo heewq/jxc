@@ -37,7 +37,7 @@ public class DamageListController {
 
     @PostMapping("/list")
     public Map<String, Object> listDamageList(@RequestParam String sTime,
-                                               @RequestParam String eTime) {
+                                              @RequestParam String eTime) {
         return damageListService.list(sTime, eTime);
     }
 

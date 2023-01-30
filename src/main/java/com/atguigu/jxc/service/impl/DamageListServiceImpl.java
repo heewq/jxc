@@ -7,6 +7,7 @@ import com.atguigu.jxc.entity.DamageList;
 import com.atguigu.jxc.entity.DamageListGoods;
 import com.atguigu.jxc.service.DamageListGoodsService;
 import com.atguigu.jxc.service.DamageListService;
+import com.atguigu.jxc.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,8 @@ public class DamageListServiceImpl implements DamageListService {
     @Autowired
     private DamageListDao damageListDao;
     @Autowired
+    private GoodsService goodsService;
+    @Autowired
     private DamageListGoodsService damageListGoodsService;
 
     @Override
@@ -30,6 +33,7 @@ public class DamageListServiceImpl implements DamageListService {
         for (DamageListGoods goods : damageListGoods) {
             goods.setDamageListId(damageList.getDamageListId());
             damageListGoodsService.save(goods);
+            goodsService.updateInventoryQuantityById(goods.getGoodsId(), goods.getGoodsNum() * -1);
         }
     }
 

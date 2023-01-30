@@ -115,4 +115,9 @@ public class GoodsServiceImpl implements GoodsService {
         map.put("rows", alarmGoods);
         return map;
     }
+
+    @Override
+    public void updateInventoryQuantityById(Integer goodsId, Integer quantity) {
+        goodsDao.updateInventoryQuantityById(goodsId, quantity);
+    }
 }

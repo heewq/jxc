@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.jxc.dao.SaleListDao">
+    <insert id="save" useGeneratedKeys="true" keyColumn="sale_list_id" keyProperty="saleListId">
+        INSERT INTO t_sale_list (sale_number, amount_paid, amount_payable, sale_date, state, remarks,
+                                 customer_id, user_id)
+        VALUES (#{saleNumber}, #{amountPaid}, #{amountPayable}, #{saleDate}, #{state}, #{remarks}, #{customerId},
+                #{userId})
+    </insert>
+    <delete id="deleteById">
+        DELETE
+        FROM t_sale_list
+        WHERE sale_list_id = #{saleListId}
+    </delete>
+    <select id="list" resultType="com.atguigu.jxc.entity.SaleList">
+        SELECT sl.*, u.true_name, c.customer_name
+        FROM `t_sale_list` sl
+        JOIN t_user u
+        USING (user_id)
+        JOIN t_customer c
+        USING (customer_id)
+        <where>
+            DATE_FORMAT(sl.sale_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{sTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(sl.sale_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{eTime}, '%Y-%m-%d')
+            <if test="saleNumber != null and saleNumber != ''">
+                AND sl.sale_number LIKE CONCAT('%', #{saleNumber}, '%')
+            </if>
+            <if test="customerId != null and customerId != ''">
+                AND sl.customer_id = #{customerId}
+            </if>
+            <if test="state != null and state != ''">
+                AND pl.state = #{state}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -9,4 +9,30 @@
         VALUES (#{purchaseNumber}, #{amountPaid}, #{amountPayable}, #{purchaseDate}, #{remarks}, #{state},
                 #{supplierId}, #{userId})
     </insert>
+    <delete id="deleteById">
+        DELETE
+        FROM t_purchase_list
+        WHERE purchase_list_id = #{purchaseListId}
+    </delete>
+    <select id="list" resultType="com.atguigu.jxc.entity.PurchaseList">
+        SELECT pl.*, u.true_name, s.supplier_name
+        FROM `t_purchase_list` pl
+        JOIN t_user u
+        USING (user_id)
+        JOIN t_supplier s
+        USING (supplier_id)
+        <where>
+            DATE_FORMAT(pl.purchase_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{sTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(pl.purchase_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{eTime}, '%Y-%m-%d')
+            <if test="purchaseNumber != null and purchaseNumber != ''">
+                AND pl.purchase_number LIKE CONCAT('%', #{purchaseNumber}, '%')
+            </if>
+            <if test="supplierId != null and supplierId != ''">
+                AND pl.supplier_id = #{supplierId}
+            </if>
+            <if test="state != null and state != ''">
+                AND pl.state = #{state}
+            </if>
+        </where>
+    </select>
 </mapper>

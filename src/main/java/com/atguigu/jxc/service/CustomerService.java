@@ -2,6 +2,7 @@ package com.atguigu.jxc.service;
 
 import com.atguigu.jxc.entity.Customer;
 
+import java.util.List;
 import java.util.Map;
 
 public interface CustomerService {
@@ -12,4 +13,6 @@ public interface CustomerService {
     void updateById(Customer customer);
 
     void deleteById(String ids);
+
+    List<Customer> comboboxListCustomer(String customerName);
 }

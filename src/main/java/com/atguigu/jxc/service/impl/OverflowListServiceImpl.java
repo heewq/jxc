@@ -2,9 +2,6 @@ package com.atguigu.jxc.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.atguigu.jxc.dao.OverflowListDao;
-import com.atguigu.jxc.dao.OverflowListGoodsDao;
-import com.atguigu.jxc.entity.DamageList;
-import com.atguigu.jxc.entity.DamageListGoods;
 import com.atguigu.jxc.entity.OverflowList;
 import com.atguigu.jxc.entity.OverflowListGoods;
 import com.atguigu.jxc.service.OverflowListGoodsService;
@@ -30,6 +27,7 @@ public class OverflowListServiceImpl implements OverflowListService {
         for (OverflowListGoods goods : overflowListGoods) {
             goods.setOverflowListId(overflowList.getOverflowListId());
             overflowListGoodsService.save(goods);
+            // 修改库存 ???
         }
     }
 

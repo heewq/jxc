@@ -70,6 +70,11 @@
         </set>
         WHERE goods_id = #{goodsId}
     </update>
+    <update id="updateInventoryQuantityById">
+        UPDATE t_goods
+        SET inventory_quantity = inventory_quantity + #{quantity}
+        WHERE goods_id = #{goodsId}
+    </update>
     <delete id="deleteById">
         DELETE
         FROM t_goods

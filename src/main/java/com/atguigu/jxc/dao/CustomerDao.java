@@ -16,4 +16,6 @@ public interface CustomerDao {
     void updateById(@Param("customer") Customer customer);
 
     void deleteById(@Param("idList") String[] idList);
+
+    List<Customer> comboboxListCustomer(@Param("customerName") String customerName);
 }

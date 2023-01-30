@@ -42,4 +42,9 @@ public class CustomerServiceImpl implements CustomerService {
         String[] idList = ids.split(",");
         customerDao.deleteById(idList);
     }
+
+    @Override
+    public List<Customer> comboboxListCustomer(String customerName) {
+        return customerDao.comboboxListCustomer(customerName);
+    }
 }

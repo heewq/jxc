@@ -75,7 +75,7 @@ public class GoodsController {
     @PostMapping("/saveStock")
     public ServiceVO saveOrUpdate(@RequestParam Integer goodsId,
                                   @RequestParam(required = false) Integer inventoryQuantity,
-                                  @RequestParam(required = false) double purchasingPrice) {
+                                  @RequestParam(required = false) Double purchasingPrice) {
 
         goodsService.updateById(goodsId, inventoryQuantity, purchasingPrice);
         return new ServiceVO<>(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);

@@ -30,6 +30,15 @@
             WHERE customer_id = #{customer.customerId}
         </set>
     </update>
+    <select id="comboboxListCustomer" resultType="com.atguigu.jxc.entity.Customer">
+        SELECT *
+        FROM t_customer
+        <where>
+            <if test="customerName != null and customerName != ''">
+                customer_name LIKE CONCAT('%', #{customerName}, '%')
+            </if>
+        </where>
+    </select>
     <delete id="deleteById">
         DELETE FROM t_customer
         <where>
