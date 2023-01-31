@@ -1,5 +1,6 @@
 package com.atguigu.jxc.dao;
 
+import com.atguigu.jxc.domain.PurchaseAndReturnStatistics;
 import com.atguigu.jxc.entity.PurchaseList;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,4 +18,11 @@ public interface PurchaseListDao {
                             @Param("eTime") String eTime);
 
     void deleteById(@Param("purchaseListId") Integer purchaseListId);
+
+    void updateState(@Param("purchaseListId") Integer purchaseListId);
+
+    List<PurchaseAndReturnStatistics> purchaseStatistics(@Param("goodsTypeId") Integer goodsTypeId,
+                                                         @Param("codeOrName") String codeOrName,
+                                                         @Param("sTime") String sTime,
+                                                         @Param("eTime") String eTime);
 }

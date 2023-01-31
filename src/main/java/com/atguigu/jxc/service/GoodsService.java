@@ -19,7 +19,7 @@ public interface GoodsService {
 
     String getCode();
 
-    void delete(Integer goodsId);
+    ServiceVO delete(Integer goodsId);
 
     Map<String, Object> listNoInventoryQuantity(Integer page, Integer rows, String nameOrCode);
 
@@ -30,4 +30,8 @@ public interface GoodsService {
     Map<String, Object> listAlarm();
 
     void updateInventoryQuantityById(Integer goodsId, Integer quantity);
+
+    ServiceVO deleteStock(Integer goodsId);
+
+    Goods getById(Integer goodsId);
 }

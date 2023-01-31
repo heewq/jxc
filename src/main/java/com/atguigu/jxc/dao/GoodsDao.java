@@ -34,6 +34,8 @@ public interface GoodsDao {
 
     void updateInventoryQuantityById(@Param("goodsId") Integer goodsId, @Param("quantity") Integer quantity);
 
+    Goods getById(@Param("goodsId") Integer goodsId);
+
 //    List<Goods> listGoods(@Param("offset") Integer offset, @Param("rows") Integer rows, @Param("goodsName") String goodsName, @Param("goodsTypeId") Integer goodsTypeId);
 
 //    Integer getTotalGoods(@Param("goodsName") String goodsName, @Param("goodsTypeId") Integer goodsTypeId);

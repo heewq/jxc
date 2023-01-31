@@ -35,4 +35,39 @@
             </if>
         </where>
     </select>
+    <select id="customerReturnStatistics" resultType="com.atguigu.jxc.domain.SaleAndReturnStatistics">
+        SELECT
+        crl.return_number `number`,
+        crl.return_date `date`,
+        c.customer_name,
+        crg.goods_code `code`,
+        crg.goods_name `name`,
+        crg.goods_model model,
+        gt.goods_type_name goods_type,
+        crg.goods_unit unit,
+        crg.price,
+        crg.goods_num num,
+        crg.total
+        FROM `t_customer_return_list` crl
+        JOIN `t_customer` c
+        USING(customer_id)
+        JOIN `t_customer_return_list_goods` crg
+        USING(customer_return_list_id)
+        JOIN `t_goods_type` gt
+        USING(goods_type_id)
+        <where>
+            DATE_FORMAT(crl.return_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{sTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(crl.return_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{eTime}, '%Y-%m-%d')
+            <if test="codeOrName != null and codeOrName != ''">
+                AND
+                (
+                crg.goods_code LIKE CONCAT('%', #{codeOrName}, '%') OR
+                crg.goods_name LIKE CONCAT('%', #{codeOrName}, '%')
+                )
+            </if>
+            <if test="goodsTypeId != null and goodsTypeId != ''">
+                AND crg.goods_type_id = #{goodsTypeId}
+            </if>
+        </where>
+    </select>
 </mapper>

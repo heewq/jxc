@@ -8,7 +8,7 @@ import lombok.Data;
 public class SaleData {
 
     private String date;
-    private double saleTotal;
-    private double purchasingTotal;
-
+    private Double saleTotal;
+    private Double purchasingTotal;
+    private Double profit;
 }

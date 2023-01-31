@@ -8,6 +8,10 @@
         FROM t_goods_type
         WHERE p_id = #{PID}
     </select>
+    <select id="getAllGoodsType" resultType="com.atguigu.jxc.entity.GoodsType">
+        SELECT *
+        FROM t_goods_type
+    </select>
 
     <insert id="save">
         INSERT INTO t_goods_type(goods_type_name, p_id, goods_type_state)

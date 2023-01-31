@@ -9,6 +9,11 @@
         VALUES (#{purchaseNumber}, #{amountPaid}, #{amountPayable}, #{purchaseDate}, #{remarks}, #{state},
                 #{supplierId}, #{userId})
     </insert>
+    <update id="updateState">
+        UPDATE t_purchase_list
+        SET state = 1
+        WHERE purchase_list_id = #{purchaseListId}
+    </update>
     <delete id="deleteById">
         DELETE
         FROM t_purchase_list
@@ -32,6 +37,41 @@
             </if>
             <if test="state != null and state != ''">
                 AND pl.state = #{state}
+            </if>
+        </where>
+    </select>
+    <select id="purchaseStatistics" resultType="com.atguigu.jxc.domain.PurchaseAndReturnStatistics">
+        SELECT
+        pl.purchase_number `number`,
+        pl.purchase_date `date`,
+        s.supplier_name,
+        pg.goods_code `code`,
+        pg.goods_name `name`,
+        pg.goods_model model,
+        gt.goods_type_name goods_type,
+        pg.goods_unit unit,
+        pg.price,
+        pg.goods_num num,
+        pg.total
+        FROM `t_purchase_list` pl
+        JOIN `t_supplier` s
+        USING (supplier_id)
+        JOIN `t_purchase_list_goods` pg
+        USING (purchase_list_id)
+        JOIN `t_goods_type` gt
+        USING (goods_type_id)
+        <where>
+            DATE_FORMAT(pl.purchase_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{sTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(pl.purchase_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{eTime}, '%Y-%m-%d')
+            <if test="codeOrName != null and codeOrName != ''">
+                AND
+                (
+                pg.goods_code LIKE CONCAT('%', #{codeOrName}, '%') OR
+                pg.goods_name LIKE CONCAT('%', #{codeOrName}, '%')
+                )
+            </if>
+            <if test="goodsTypeId != null and goodsTypeId != ''">
+                AND pg.goods_type_id = #{goodsTypeId}
             </if>
         </where>
     </select>

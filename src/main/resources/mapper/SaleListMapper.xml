@@ -9,6 +9,11 @@
         VALUES (#{saleNumber}, #{amountPaid}, #{amountPayable}, #{saleDate}, #{state}, #{remarks}, #{customerId},
                 #{userId})
     </insert>
+    <update id="updateState">
+        UPDATE t_sale_list
+        SET state = 1
+        WHERE sale_list_id = #{saleListId}
+    </update>
     <delete id="deleteById">
         DELETE
         FROM t_sale_list
@@ -32,6 +37,41 @@
             </if>
             <if test="state != null and state != ''">
                 AND pl.state = #{state}
+            </if>
+        </where>
+    </select>
+    <select id="saleStatistics" resultType="com.atguigu.jxc.domain.SaleAndReturnStatistics">
+        SELECT
+        sl.sale_number `number`,
+        sl.sale_date `date`,
+        c.customer_name,
+        sg.goods_code `code`,
+        sg.goods_name `name`,
+        sg.goods_model model,
+        gt.goods_type_name goods_type,
+        sg.goods_unit unit,
+        sg.price,
+        sg.goods_num num,
+        sg.total
+        FROM `t_sale_list` sl
+        JOIN `t_customer` c
+        USING (customer_id)
+        JOIN `t_sale_list_goods` sg
+        USING (sale_list_id)
+        JOIN `t_goods_type` gt
+        USING (goods_type_id)
+        <where>
+            DATE_FORMAT(sl.sale_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{sTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(sl.sale_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{eTime}, '%Y-%m-%d')
+            <if test="codeOrName != null and codeOrName != ''">
+                AND
+                (
+                sg.goods_code LIKE CONCAT('%', #{codeOrName}, '%')
+                sg.goods_name LIKE CONCAT('%', #{codeOrName}, '%')
+                )
+            </if>
+            <if test="goodsTypeId != null and goodsTypeId != ''">
+                AND sg.goods_type_id = #{goodsTypeId}
             </if>
         </where>
     </select>

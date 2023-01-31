@@ -10,4 +10,6 @@ public interface ReturnListService {
     Map<String, Object> list(String returnNumber, Integer supplierId, Integer state, String sTime, String eTime);
 
     void deleteById(Integer returnListId);
+
+    String returnStatistics(Integer goodsTypeId, String codeOrName, String sTime, String eTime);
 }

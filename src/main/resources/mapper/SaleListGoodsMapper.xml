@@ -24,4 +24,30 @@
         FROM t_sale_list_goods
         WHERE sale_list_id = #{saleListId}
     </select>
+    <select id="getSaleDataByDay" resultType="com.atguigu.jxc.entity.SaleData">
+        SELECT sl.sale_date                                                     `date`,
+               ROUND(SUM(sg.total), 2)                                          sale_total,
+               ROUND(SUM(sg.goods_num * g.purchasing_price), 2)                 purchasing_total,
+               ROUND(SUM(sg.total) - SUM(sg.goods_num * g.purchasing_price), 2) profit
+        FROM `t_sale_list` sl
+                 JOIN `t_sale_list_goods` sg
+                      USING (sale_list_id)
+                 JOIN `t_goods` g
+                      USING (goods_id)
+        WHERE sl.sale_date BETWEEN #{sTime} AND #{eTime}
+        GROUP BY sl.sale_date
+    </select>
+    <select id="getSaleDataByMonth" resultType="com.atguigu.jxc.entity.SaleData">
+        SELECT DATE_FORMAT(sl.sale_date, '%Y-%m')                               `date`,
+               ROUND(SUM(sg.total), 2)                                          sale_total,
+               ROUND(SUM(sg.goods_num * g.purchasing_price), 2)                 purchasing_total,
+               ROUND(SUM(sg.total) - SUM(sg.goods_num * g.purchasing_price), 2) profit
+        FROM `t_sale_list` sl
+                 JOIN `t_sale_list_goods` sg
+                      USING (sale_list_id)
+                 JOIN `t_goods` g
+                      USING (goods_id)
+        WHERE DATE_FORMAT(sl.sale_date, '%Y-%m') BETWEEN #{sTime} AND #{eTime}
+        GROUP BY DATE_FORMAT(sl.sale_date, '%Y-%m')
+    </select>
 </mapper>

@@ -42,9 +42,18 @@ public class ReturnListController {
     public Map<String, Object> listReturnGoodsById(@RequestParam Integer returnListId) {
         return returnListGoodsService.listReturnGoodsById(returnListId);
     }
+
     @PostMapping("/delete")
     public ServiceVO deleteById(@RequestParam Integer returnListId) {
         returnListService.deleteById(returnListId);
         return new ServiceVO(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
+    }
+
+    @PostMapping("/count")
+    public String returnStatistics(@RequestParam(required = false) Integer goodsTypeId,
+                                   @RequestParam(required = false) String codeOrName,
+                                   @RequestParam String sTime,
+                                   @RequestParam String eTime) {
+        return returnListService.returnStatistics(goodsTypeId, codeOrName, sTime, eTime);
     }
 }

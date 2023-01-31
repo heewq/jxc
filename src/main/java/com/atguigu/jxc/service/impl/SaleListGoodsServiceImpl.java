@@ -1,6 +1,7 @@
 package com.atguigu.jxc.service.impl;
 
 import com.atguigu.jxc.dao.SaleListGoodsDao;
+import com.atguigu.jxc.entity.SaleData;
 import com.atguigu.jxc.entity.SaleListGoods;
 import com.atguigu.jxc.service.SaleListGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,15 @@ public class SaleListGoodsServiceImpl implements SaleListGoodsService {
     @Override
     public void deleteBySaleListId(Integer saleListId) {
         saleListGoodsDao.deleteBySaleListId(saleListId);
+    }
+
+    @Override
+    public List<SaleData> getSaleDataByDay(String sTime, String eTime) {
+        return saleListGoodsDao.getSaleDataByDay(sTime, eTime);
+    }
+
+    @Override
+    public List<SaleData> getSaleDataByMonth(String sTime, String eTime) {
+        return saleListGoodsDao.getSaleDataByMonth(sTime, eTime);
     }
 }

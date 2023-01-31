@@ -50,4 +50,11 @@ public class CustomerReturnListController {
         return new ServiceVO(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
     }
 
+    @PostMapping("/count")
+    public String customerReturnStatistics(@RequestParam(required = false) Integer goodsTypeId,
+                                 @RequestParam(required = false) String codeOrName,
+                                 @RequestParam String sTime,
+                                 @RequestParam String eTime) {
+        return customerReturnListService.customerReturnStatistics(goodsTypeId, codeOrName, sTime, eTime);
+    }
 }

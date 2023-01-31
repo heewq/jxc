@@ -1,5 +1,6 @@
 package com.atguigu.jxc.dao;
 
+import com.atguigu.jxc.entity.SaleData;
 import com.atguigu.jxc.entity.SaleListGoods;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,8 @@ public interface SaleListGoodsDao {
     List<SaleListGoods> listSaleGoodsById(@Param("saleListId") Integer saleListId);
 
     void deleteBySaleListId(@Param("saleListId") Integer saleListId);
+
+    List<SaleData> getSaleDataByDay(@Param("sTime") String sTime, @Param("eTime") String eTime);
+
+    List<SaleData> getSaleDataByMonth(@Param("sTime") String sTime, @Param("eTime") String eTime);
 }

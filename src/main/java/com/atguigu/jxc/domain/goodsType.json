@@ -1,0 +1,165 @@
+[
+  {
+    "attributes": {
+      "state": 1
+    },
+    "children": [
+      {
+        "attributes": {
+          "state": 1
+        },
+        "children": [
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 6,
+            "state": "open",
+            "text": "连衣裙"
+          },
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 7,
+            "state": "open",
+            "text": "男士西装"
+          },
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 8,
+            "state": "open",
+            "text": "牛仔裤"
+          }
+        ],
+        "iconCls": "goods-type",
+        "id": 2,
+        "state": "closed",
+        "text": "服饰"
+      },
+      {
+        "attributes": {
+          "state": 1
+        },
+        "children": [
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 9,
+            "state": "open",
+            "text": "进口食品"
+          },
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 10,
+            "state": "open",
+            "text": "地方特产"
+          },
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 11,
+            "state": "open",
+            "text": "休闲食品"
+          }
+        ],
+        "iconCls": "goods-type",
+        "id": 3,
+        "state": "closed",
+        "text": "食品"
+      },
+      {
+        "attributes": {
+          "state": 1
+        },
+        "children": [
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 12,
+            "state": "open",
+            "text": "电视机"
+          },
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 13,
+            "state": "open",
+            "text": "洗衣机"
+          },
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 14,
+            "state": "open",
+            "text": "冰箱"
+          }
+        ],
+        "iconCls": "goods-type",
+        "id": 4,
+        "state": "closed",
+        "text": "家电"
+      },
+      {
+        "attributes": {
+          "state": 1
+        },
+        "children": [
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 15,
+            "state": "open",
+            "text": "相机"
+          },
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 16,
+            "state": "open",
+            "text": "手机"
+          },
+          {
+            "attributes": {
+              "state": 0
+            },
+            "iconCls": "goods-type",
+            "id": 17,
+            "state": "open",
+            "text": "音箱"
+          }
+        ],
+        "iconCls": "goods-type",
+        "id": 5,
+        "state": "closed",
+        "text": "数码"
+      }
+    ],
+    "iconCls": "goods-type",
+    "id": 1,
+    "state": "closed",
+    "text": "所有类别"
+  }
+]

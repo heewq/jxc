@@ -15,4 +15,6 @@ public interface GoodsTypeDao {
     void save(@Param("goodsTypeName") String goodsTypeName, @Param("pId") Integer pId);
 
     void deleteById(@Param("goodsTypeId") Integer goodsTypeId);
+
+    List<GoodsType> getAllGoodsType();
 }

@@ -2,8 +2,10 @@ package com.atguigu.jxc.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.atguigu.jxc.dao.OverflowListDao;
+import com.atguigu.jxc.entity.Goods;
 import com.atguigu.jxc.entity.OverflowList;
 import com.atguigu.jxc.entity.OverflowListGoods;
+import com.atguigu.jxc.service.GoodsService;
 import com.atguigu.jxc.service.OverflowListGoodsService;
 import com.atguigu.jxc.service.OverflowListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class OverflowListServiceImpl implements OverflowListService {
     private OverflowListDao overflowListDao;
     @Autowired
     private OverflowListGoodsService overflowListGoodsService;
+    @Autowired
+    private GoodsService goodsService;
 
     @Override
     public void save(String overflowNumber, OverflowList overflowList, String overflowListGoodsStr) {
@@ -27,7 +31,10 @@ public class OverflowListServiceImpl implements OverflowListService {
         for (OverflowListGoods goods : overflowListGoods) {
             goods.setOverflowListId(overflowList.getOverflowListId());
             overflowListGoodsService.save(goods);
-            // 修改库存 ???
+            Goods stockGoods = goodsService.getById(goods.getGoodsId());
+            stockGoods.setState(2);
+            stockGoods.setInventoryQuantity(stockGoods.getInventoryQuantity() + goods.getGoodsNum());
+            goodsService.update(stockGoods);
         }
     }
 

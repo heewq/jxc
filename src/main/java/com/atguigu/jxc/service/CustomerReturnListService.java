@@ -10,4 +10,6 @@ public interface CustomerReturnListService {
     Map<String, Object> list(String returnNumber, Integer customerId, Integer state, String sTime, String eTime);
 
     void deleteById(Integer customerReturnListId);
+
+    String customerReturnStatistics(Integer goodsTypeId, String codeOrName, String sTime, String eTime);
 }

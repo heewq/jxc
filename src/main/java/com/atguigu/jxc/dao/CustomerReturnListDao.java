@@ -1,5 +1,6 @@
 package com.atguigu.jxc.dao;
 
+import com.atguigu.jxc.domain.SaleAndReturnStatistics;
 import com.atguigu.jxc.entity.CustomerReturnList;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,4 +18,9 @@ public interface CustomerReturnListDao {
                                   @Param("eTime") String eTime);
 
     void deleteById(@Param("customerReturnListId") Integer customerReturnListId);
+
+    List<SaleAndReturnStatistics> customerReturnStatistics(@Param("goodsTypeId") Integer goodsTypeId,
+                                                           @Param("codeOrName") String codeOrName,
+                                                           @Param("sTime") String sTime,
+                                                           @Param("eTime") String eTime);
 }

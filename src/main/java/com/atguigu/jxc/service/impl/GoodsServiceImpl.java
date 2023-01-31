@@ -1,6 +1,9 @@
 package com.atguigu.jxc.service.impl;
 
 import com.atguigu.jxc.dao.GoodsDao;
+import com.atguigu.jxc.domain.ErrorCode;
+import com.atguigu.jxc.domain.ServiceVO;
+import com.atguigu.jxc.domain.SuccessCode;
 import com.atguigu.jxc.entity.Goods;
 import com.atguigu.jxc.service.CustomerReturnListGoodsService;
 import com.atguigu.jxc.service.GoodsService;
@@ -56,6 +59,9 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public void insert(Goods goods) {
+        // first purchasing
+        //set lastPurchasingPrice = goods.purchasingPrice
+        goods.setLastPurchasingPrice(goods.getPurchasingPrice());
         goods.setInventoryQuantity(0);
         goods.setState(0);
         goodsDao.insert(goods);
@@ -78,8 +84,16 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public void delete(Integer goodsId) {
-        goodsDao.deleteById(goodsId);
+    public ServiceVO delete(Integer goodsId) {
+        Goods goods = goodsDao.getById(goodsId);
+        if (goods.getState() == 1) {
+            return new ServiceVO<>(ErrorCode.STORED_ERROR_CODE, ErrorCode.STORED_ERROR_MESS);
+        } else if (goods.getState() == 2) {
+            return new ServiceVO<>(ErrorCode.HAS_FORM_ERROR_CODE, ErrorCode.HAS_FORM_ERROR_MESS);
+        } else {
+            goodsDao.deleteById(goodsId);
+            return new ServiceVO<>(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
+        }
     }
 
     @Override
@@ -119,5 +133,21 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public void updateInventoryQuantityById(Integer goodsId, Integer quantity) {
         goodsDao.updateInventoryQuantityById(goodsId, quantity);
+    }
+
+    @Override
+    public ServiceVO deleteStock(Integer goodsId) {
+        Goods goods = goodsDao.getById(goodsId);
+        if (goods.getState() == 2) {
+            return new ServiceVO<>(ErrorCode.HAS_FORM_ERROR_CODE, ErrorCode.HAS_FORM_ERROR_MESS);
+        } else {
+            this.updateInventoryQuantityById(goodsId, goods.getInventoryQuantity() * -1);
+            return new ServiceVO<>(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
+        }
+    }
+
+    @Override
+    public Goods getById(Integer goodsId) {
+        return goodsDao.getById(goodsId);
     }
 }

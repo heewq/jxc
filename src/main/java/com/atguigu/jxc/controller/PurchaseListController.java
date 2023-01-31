@@ -56,7 +56,15 @@ public class PurchaseListController {
 
     @PostMapping("/updateState")
     public ServiceVO updateState(@RequestParam Integer purchaseListId) {
-        // TODO
+        purchaseListService.updateState(purchaseListId);
         return new ServiceVO(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
+    }
+
+    @PostMapping("/count")
+    public String purchaseStatistics(@RequestParam(required = false) Integer goodsTypeId,
+                                     @RequestParam(required = false) String codeOrName,
+                                     @RequestParam String sTime,
+                                     @RequestParam String eTime) {
+        return purchaseListService.purchaseStatistics(goodsTypeId, codeOrName, sTime, eTime);
     }
 }

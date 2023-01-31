@@ -217,4 +217,9 @@
         FROM `t_goods`
         WHERE inventory_quantity &lt; min_num
     </select>
+    <select id="getById" resultType="com.atguigu.jxc.entity.Goods">
+        SELECT *
+        FROM t_goods
+        WHERE goods_id = #{goodsId}
+    </select>
 </mapper>

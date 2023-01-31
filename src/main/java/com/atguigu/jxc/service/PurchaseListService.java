@@ -10,4 +10,8 @@ public interface PurchaseListService {
     Map<String, Object> list(String purchaseNumber, Integer supplierId, Integer state, String sTime, String eTime);
 
     void deleteById(Integer purchaseListId);
+
+    void updateState(Integer purchaseListId);
+
+    String purchaseStatistics(Integer goodsTypeId, String codeOrName, String sTime, String eTime);
 }

@@ -1,5 +1,6 @@
 package com.atguigu.jxc.controller;
 
+import com.atguigu.jxc.domain.ErrorCode;
 import com.atguigu.jxc.domain.ServiceVO;
 import com.atguigu.jxc.domain.SuccessCode;
 import com.atguigu.jxc.entity.Goods;
@@ -54,8 +55,7 @@ public class GoodsController {
 
     @PostMapping("/delete")
     public ServiceVO deleteById(@RequestParam Integer goodsId) {
-        goodsService.delete(goodsId);
-        return new ServiceVO(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
+        return goodsService.delete(goodsId);
     }
 
     @PostMapping("/getNoInventoryQuantity")
@@ -73,9 +73,9 @@ public class GoodsController {
     }
 
     @PostMapping("/saveStock")
-    public ServiceVO saveOrUpdate(@RequestParam Integer goodsId,
-                                  @RequestParam(required = false) Integer inventoryQuantity,
-                                  @RequestParam(required = false) Double purchasingPrice) {
+    public ServiceVO updateStock(@RequestParam Integer goodsId,
+                                 @RequestParam(required = false) Integer inventoryQuantity,
+                                 @RequestParam(required = false) Double purchasingPrice) {
 
         goodsService.updateById(goodsId, inventoryQuantity, purchasingPrice);
         return new ServiceVO<>(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
@@ -83,8 +83,7 @@ public class GoodsController {
 
     @PostMapping("/deleteStock")
     public ServiceVO deleteStock(@RequestParam Integer goodsId) {
-        goodsService.delete(goodsId);
-        return new ServiceVO(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
+        return goodsService.deleteStock(goodsId);
     }
 
     @PostMapping("/listAlarm")

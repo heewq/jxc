@@ -5,6 +5,7 @@ import com.atguigu.jxc.dao.DamageListDao;
 import com.atguigu.jxc.dao.DamageListGoodsDao;
 import com.atguigu.jxc.entity.DamageList;
 import com.atguigu.jxc.entity.DamageListGoods;
+import com.atguigu.jxc.entity.Goods;
 import com.atguigu.jxc.service.DamageListGoodsService;
 import com.atguigu.jxc.service.DamageListService;
 import com.atguigu.jxc.service.GoodsService;
@@ -33,7 +34,10 @@ public class DamageListServiceImpl implements DamageListService {
         for (DamageListGoods goods : damageListGoods) {
             goods.setDamageListId(damageList.getDamageListId());
             damageListGoodsService.save(goods);
-            goodsService.updateInventoryQuantityById(goods.getGoodsId(), goods.getGoodsNum() * -1);
+            Goods stockGoods = goodsService.getById(goods.getGoodsId());
+            stockGoods.setState(2);
+            stockGoods.setInventoryQuantity(stockGoods.getInventoryQuantity() - goods.getGoodsNum());
+            goodsService.update(stockGoods);
         }
     }
 

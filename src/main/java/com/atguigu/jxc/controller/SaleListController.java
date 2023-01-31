@@ -48,4 +48,30 @@ public class SaleListController {
         saleListService.deleteById(saleListId);
         return new ServiceVO(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
     }
+
+    @PostMapping("/updateState")
+    public ServiceVO updateState(@RequestParam Integer saleListId) {
+        saleListService.updateState(saleListId);
+        return new ServiceVO(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
+    }
+
+    @PostMapping("/count")
+    public String saleStatistics(@RequestParam(required = false) Integer goodsTypeId,
+                                 @RequestParam(required = false) String codeOrName,
+                                 @RequestParam String sTime,
+                                 @RequestParam String eTime) {
+        return saleListService.saleStatistics(goodsTypeId, codeOrName, sTime, eTime);
+    }
+
+    @PostMapping("/getSaleDataByDay")
+    public String getSaleDataByDay(@RequestParam String sTime,
+                                   @RequestParam String eTime) throws Exception {
+        return saleListService.getSaleDataBy(sTime, eTime, "day");
+    }
+
+    @PostMapping("/getSaleDataByMonth")
+    public String getSaleDataByMonth(@RequestParam String sTime,
+                                     @RequestParam String eTime) throws Exception {
+        return saleListService.getSaleDataBy(sTime, eTime, "month");
+    }
 }

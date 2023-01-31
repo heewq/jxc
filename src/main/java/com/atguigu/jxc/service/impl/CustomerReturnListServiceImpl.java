@@ -1,9 +1,12 @@
 package com.atguigu.jxc.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.atguigu.jxc.dao.CustomerReturnListDao;
+import com.atguigu.jxc.domain.SaleAndReturnStatistics;
 import com.atguigu.jxc.entity.CustomerReturnList;
 import com.atguigu.jxc.entity.CustomerReturnListGoods;
+import com.atguigu.jxc.entity.Goods;
 import com.atguigu.jxc.entity.User;
 import com.atguigu.jxc.service.CustomerReturnListGoodsService;
 import com.atguigu.jxc.service.CustomerReturnListService;
@@ -37,7 +40,10 @@ public class CustomerReturnListServiceImpl implements CustomerReturnListService 
         for (CustomerReturnListGoods goods : customerReturnListGoods) {
             goods.setCustomerReturnListId(customerReturnList.getCustomerReturnListId());
             customerReturnListGoodsService.save(goods);
-            goodsService.updateInventoryQuantityById(goods.getGoodsId(), goods.getGoodsNum());
+            Goods stockGoods = goodsService.getById(goods.getGoodsId());
+            stockGoods.setState(2);
+            stockGoods.setInventoryQuantity(stockGoods.getInventoryQuantity() + goods.getGoodsNum());
+            goodsService.update(stockGoods);
         }
     }
 
@@ -53,5 +59,12 @@ public class CustomerReturnListServiceImpl implements CustomerReturnListService 
     public void deleteById(Integer customerReturnListId) {
         customerReturnListGoodsService.deleteByCustomerReturnListId(customerReturnListId);
         customerReturnListDao.deleteById(customerReturnListId);
+    }
+
+    @Override
+    public String customerReturnStatistics(Integer goodsTypeId, String codeOrName, String sTime, String eTime) {
+        List<SaleAndReturnStatistics> saleAndReturnStatistics
+                = customerReturnListDao.customerReturnStatistics(goodsTypeId, codeOrName, sTime, eTime);
+        return JSON.toJSONString(saleAndReturnStatistics);
     }
 }
