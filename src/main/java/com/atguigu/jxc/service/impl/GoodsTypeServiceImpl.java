@@ -3,10 +3,14 @@ package com.atguigu.jxc.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.atguigu.jxc.dao.GoodsTypeDao;
 import com.atguigu.jxc.domain.GoodsTypeVo;
+import com.atguigu.jxc.domain.ServiceVO;
+import com.atguigu.jxc.domain.SuccessCode;
 import com.atguigu.jxc.entity.GoodsType;
 import com.atguigu.jxc.service.GoodsTypeService;
+import com.atguigu.jxc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,12 +70,27 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
 
     @Override
     public void save(String goodsTypeName, Integer pId) {
-        goodsTypeDao.save(goodsTypeName, pId);
+        goodsTypeDao.save(goodsTypeName, pId, 0);
+        GoodsType goodsType = new GoodsType();
+        goodsType.setGoodsTypeId(pId);
+        goodsType.setGoodsTypeState(1);
+        goodsTypeDao.update(goodsType);
     }
 
     @Override
-    public void deleteById(Integer goodsTypeId) {
-        goodsTypeDao.deleteById(goodsTypeId);
+    public ServiceVO deleteById(Integer goodsTypeId) {
+        GoodsType goodsType = goodsTypeDao.getById(goodsTypeId);
+        GoodsType parentGoodsType = goodsTypeDao.getById(goodsType.getPId());
+        Integer row = goodsTypeDao.deleteById(goodsTypeId);
+        if (row != 0) {
+            List<GoodsType> goodsTypes = goodsTypeDao.getAllGoodsTypeByPID(goodsType.getPId());
+            if (goodsTypes.isEmpty()) {
+                parentGoodsType.setGoodsTypeState(0);
+                goodsTypeDao.update(parentGoodsType);
+            }
+            return new ServiceVO(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
+        }
+        throw new IllegalArgumentException();
     }
 
 //    public JsonArray getAllGoodsType(Integer parentId) {

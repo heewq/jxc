@@ -3,24 +3,45 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.jxc.dao.GoodsTypeDao">
+    <update id="update">
+        UPDATE t_goods_type
+        <set>
+            <if test="goodsTypeName != null">
+                goods_type_name = #{goodsTypeName},
+            </if>
+            <if test="pId != null">
+                p_id = #{pId},
+            </if>
+            <if test="goodsTypeState != null">
+                goods_type_state = #{goodsTypeState}
+            </if>
+        </set>
+        WHERE goods_type_id = #{goodsTypeId}
+    </update>
     <select id="getAllGoodsTypeByPID" resultType="com.atguigu.jxc.entity.GoodsType">
         SELECT *
         FROM t_goods_type
-        WHERE p_id = #{PID}
+        WHERE p_id = #{PId}
     </select>
     <select id="getAllGoodsType" resultType="com.atguigu.jxc.entity.GoodsType">
         SELECT *
         FROM t_goods_type
     </select>
+    <select id="getById" resultType="com.atguigu.jxc.entity.GoodsType">
+        SELECT *
+        FROM t_goods_type
+        WHERE goods_type_id = #{goodsTypeId}
+    </select>
 
     <insert id="save">
         INSERT INTO t_goods_type(goods_type_name, p_id, goods_type_state)
-        values (#{goodsTypeName}, #{pId}, 0)
+        values (#{goodsTypeName}, #{pId}, #{goodsTypeState})
     </insert>
 
     <delete id="deleteById">
         DELETE
         FROM t_goods_type
         where goods_type_id = #{goodsTypeId}
+          AND goods_type_state = 0
     </delete>
 </mapper>

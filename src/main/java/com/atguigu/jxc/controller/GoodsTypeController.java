@@ -29,7 +29,6 @@ public class GoodsTypeController {
 
     @PostMapping("/delete")
     public ServiceVO delete(@RequestParam Integer goodsTypeId) {
-        goodsTypeService.deleteById(goodsTypeId);
-        return new ServiceVO(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
+        return goodsTypeService.deleteById(goodsTypeId);
     }
 }

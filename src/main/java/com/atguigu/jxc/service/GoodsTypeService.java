@@ -1,9 +1,11 @@
 package com.atguigu.jxc.service;
 
+import com.atguigu.jxc.domain.ServiceVO;
+
 public interface GoodsTypeService {
     String loadGoodsType();
 
     void save(String goodsTypeName, Integer pId);
 
-    void deleteById(Integer goodsTypeId);
+    ServiceVO deleteById(Integer goodsTypeId);
 }
